@@ -3,7 +3,7 @@
 
 # version
 
-- 1.0.0
+- 1.0.1
 
 # config
 
@@ -93,8 +93,6 @@
 - "gulp-uglify": "^1.5.1"
 - "gulp-util": "^3.0.6"
 - "gulp-watch": "^4.3.5"
-- "handlebars-helper-minify": "^0.1.3"
-- "handlebars-helpers": "^0.5.8"
 - "jshint": "^2.8.0"
 
 
