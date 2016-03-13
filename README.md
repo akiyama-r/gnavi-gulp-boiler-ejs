@@ -1,6 +1,5 @@
 # gulp-boiler-ejs
 
-
 # version
 
 - 1.0.1
@@ -13,6 +12,7 @@
 
     npm i
     npm i gulp.spritesmith
+    npm i gulp-imageoptim
 
 ### ready for development
 
@@ -48,11 +48,13 @@
 
     gulp sprite
 
+## image optim command
+
+    gulp optim
 
 ## es-lint, jshint command
 
     gulp test
-
 
 ## clean dist/、tmp/ command
 

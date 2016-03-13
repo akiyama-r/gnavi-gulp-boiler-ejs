@@ -16,6 +16,10 @@
  * 
  * $ gulp sprite
  * 
+ * ** iamge optimコマンド
+ * 
+ * $ gulp optim
+ * 
  * ** jshintコマンド
  * 
  * $ gulp test
@@ -78,6 +82,17 @@ gulp.task('sprite', function () {
   spriteData.img.pipe(gulp.dest(path.img_src));
   spriteData.css.pipe(gulp.dest(path.scss_src + 'all/module/'))
     .pipe(size({title:'size : sprite'}));
+});
+
+
+/*
+ * image optim
+ */
+var imageOptim = require('gulp-imageoptim');
+gulp.task('imageOptim', function() {
+  return gulp.src(path.img_src + '**/*')
+    .pipe(imageOptim.optimize())
+    .pipe(gulp.dest(path.img_src));
 });
 
 
@@ -256,6 +271,11 @@ gulp.task('build:html', function () {
 // build:copy
 gulp.task('build:copy', function () {
   gulpSequence('copy')();
+});
+
+// image optim
+gulp.task('optim', function () {
+  gulpSequence('imageOptim')();
 });
 
 // test
