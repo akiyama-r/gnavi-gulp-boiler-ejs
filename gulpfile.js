@@ -149,12 +149,24 @@ gulp.task('csso', function () {
  * js
  */
 // concat
-var concat = require('gulp-concat');
+var concat = require('gulp-concat-util');
 gulp.task('concat', function () {
   // js
   return gulp.src(path.js_src + 'all/*.js')
     .pipe(plumber())
     .pipe(concat('all.js'))
+    .pipe(concat.header([
+    '(function(window, $, PROJECTNAMESPACE){',
+    "  'use strict';",
+    '  PROJECTNAMESPACE = PROJECTNAMESPACE || {};',
+    '',
+    ''
+  ].join('\n')))
+    .pipe(concat.footer([
+    '',
+    '',
+    '})(window, jQuery, window.PROJECTNAMESPACE);'
+  ].join('\n')))
     .pipe(gulp.dest(path.tmp + 'js/'));
 });
 
