@@ -2,7 +2,7 @@
 
 # version
 
-- 1.0.1
+- 1.0.2
 
 # config
 
@@ -11,8 +11,6 @@
 ### install
 
     npm i
-    npm i gulp.spritesmith
-    npm i gulp-imageoptim
 
 ### ready for development
 

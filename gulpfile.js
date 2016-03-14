@@ -4,7 +4,6 @@
  * ** 開発開始手順
  * 
  * $ npm i
- * $ npm i gulp.spritesmith
  * $ gulp sprite
  * 
  * 
