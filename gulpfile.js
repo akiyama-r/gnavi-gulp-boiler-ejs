@@ -150,7 +150,18 @@ gulp.task('csso', function () {
  */
 // concat
 var concat = require('gulp-concat-util');
-gulp.task('concat', function () {
+// lib
+gulp.task('concat:lib', function () {
+  return gulp.src([
+    path.js_src + 'lib/jquery-1.12.1.min.js',
+    path.js_src + 'lib/underscore-min.js'
+  ])
+    .pipe(plumber())
+    .pipe(concat('lib.js'))
+    .pipe(gulp.dest(path.dist + 'js/'));
+});
+// common
+gulp.task('concat:common', function () {
   // js
   return gulp.src(path.js_src + 'all/*.js')
     .pipe(plumber())
@@ -272,6 +283,9 @@ gulp.task('build:css', function () {
 // build:js
 gulp.task('build:js', function () {
   gulpSequence('concat', 'uglify', 'jshint')();
+});
+gulp.task('concat', function () {
+  gulpSequence('concat:lib', 'concat:common')();
 });
 
 // build:html
