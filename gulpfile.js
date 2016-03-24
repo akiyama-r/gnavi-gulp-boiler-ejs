@@ -79,7 +79,7 @@ gulp.task('sprite', function () {
     padding: 5
   }));
   spriteData.img.pipe(gulp.dest(path.img_src));
-  spriteData.css.pipe(gulp.dest(path.scss_src + 'all/module/'))
+  spriteData.css.pipe(gulp.dest(path.scss_src + 'common/module/'))
     .pipe(size({title:'size : sprite'}));
 });
 
@@ -101,13 +101,13 @@ gulp.task('imageOptim', function() {
 // sass
 var sass = require('gulp-sass');
 gulp.task('sass', function () {
-  gulp.src(path.scss_src + 'all/import.scss')
+  gulp.src(path.scss_src + 'common/import.scss')
     .pipe(plumber())
     .pipe(sass({
       outputStyle: 'expanded'
     }))
-    .pipe(gulp.dest(path.tmp + 'css/all/'))
-    .pipe(rename('all.css'))
+    .pipe(gulp.dest(path.tmp + 'css/common/'))
+    .pipe(rename('common.css'))
     .pipe(gulp.dest(path.tmp + 'css/'));
 });
 
@@ -115,7 +115,7 @@ gulp.task('sass', function () {
 var autoprefixer = require('gulp-autoprefixer');
 require('es6-promise').polyfill();
 gulp.task('autoprefixer', function () {
-  gulp.src(path.tmp + 'css/all.css')
+  gulp.src(path.tmp + 'css/common.css')
     .pipe(plumber())
     .pipe(autoprefixer({
       browsers: ['last 2 version'],
@@ -127,7 +127,7 @@ gulp.task('autoprefixer', function () {
 // csscomb
 var csscomb = require('gulp-csscomb');
 gulp.task('csscomb', function () {
-  gulp.src(path.tmp + 'css/all.css')
+  gulp.src(path.tmp + 'css/common.css')
     .pipe(plumber())
     .pipe(csscomb())
     .pipe(gulp.dest(path.tmp + 'css/'));
@@ -136,11 +136,10 @@ gulp.task('csscomb', function () {
 // csso
 var csso = require('gulp-csso');
 gulp.task('csso', function () {
-  gulp.src(path.tmp + 'css/all.css')
+  gulp.src(path.tmp + 'css/common.css')
     .pipe(plumber())
     .pipe(csso())
     .pipe(gulp.dest(path.dist + 'css/'))
-    .pipe(livereload())
     .pipe(size({title:'size : css'}));
 });
 
@@ -163,9 +162,9 @@ gulp.task('concat:lib', function () {
 // common
 gulp.task('concat:common', function () {
   // js
-  return gulp.src(path.js_src + 'all/*.js')
+  return gulp.src(path.js_src + 'common/*.js')
     .pipe(plumber())
-    .pipe(concat('all.js'))
+    .pipe(concat('common.js'))
     .pipe(concat.header([
     '(function(window, $, PROJECTNAMESPACE){',
     "  'use strict';",
@@ -188,20 +187,19 @@ gulp.task('uglify', function () {
     .pipe(plumber())
     .pipe(uglify())
     .pipe(gulp.dest(path.dist + 'js/'))
-    .pipe(livereload())
     .pipe(size({title:'size : js'}));
 });
 
 // jshint
 var jshint = require('gulp-jshint');
 gulp.task('jshint', function () {
-  return gulp.src(path.js_src + 'all/*.js')
+  return gulp.src(path.js_src + 'common/*.js')
     .pipe(plumber())
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
 });
 gulp.task('eslint', function () {
-  return gulp.src(path.js_src + 'all/*.js')
+  return gulp.src(path.js_src + 'common/*.js')
     .pipe(plumber())
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
@@ -235,7 +233,6 @@ gulp.task('ejs', function() {
     // minify
     //.pipe(minifyejs())
     .pipe(gulp.dest(path.dist + '/'))
-    .pipe(livereload())
     .pipe(size({title:'size : html'}));
 });
 
@@ -247,13 +244,12 @@ gulp.task('copy', function () {
   return gulp.src(
     [
       path.js_src + 'lib.js',
-      path.img_src + '**/*'
+      path.img_src + '**/*.{png,jpg}'
     ],
     {base: path.src}
   )
   .pipe(plumber())
   .pipe(gulp.dest(path.dist))
-  .pipe(livereload())
   .pipe(size({title:'size : copy'}));
 });
 
@@ -262,13 +258,12 @@ gulp.task('copy', function () {
  * watch
  */
 gulp.task('watch', function () {
-  gulpSequence('build')();
   livereload.listen();
   gulp.watch(path.scss_src + '**/*.scss', ['build:css']);
   gulp.watch(path.js_src + '**/*.js', ['build:js']);
   gulp.watch(path.src + 'ejs/**/*', ['build:html']);
-  gulp.watch(path.img_src + '**/*', ['local']);
-  gulp.watch('gulpfile.js', ['local']);
+  gulp.watch(path.img_src + '**/*.{png,jpg}', ['build:copy']);
+  gulp.watch('gulpfile.js', ['build']);
 });
 
 
@@ -282,7 +277,7 @@ gulp.task('build:css', function () {
 
 // build:js
 gulp.task('build:js', function () {
-  gulpSequence('concat', 'uglify', 'jshint')();
+  gulpSequence('concat', 'uglify', 'test')();
 });
 gulp.task('concat', function () {
   gulpSequence('concat:lib', 'concat:common')();
