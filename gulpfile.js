@@ -91,7 +91,8 @@ var imageOptim = require('gulp-imageoptim');
 gulp.task('imageOptim', function() {
   return gulp.src(path.img_src + '**/*')
     .pipe(imageOptim.optimize())
-    .pipe(gulp.dest(path.img_src));
+    .pipe(gulp.dest(path.img_src))
+    .pipe(livereload());
 });
 
 
@@ -140,7 +141,8 @@ gulp.task('csso', function () {
     .pipe(plumber())
     .pipe(csso())
     .pipe(gulp.dest(path.dist + 'css/'))
-    .pipe(size({title:'size : css'}));
+    .pipe(size({title:'size : css'}))
+    .pipe(livereload());
 });
 
 
@@ -187,7 +189,8 @@ gulp.task('uglify', function () {
     .pipe(plumber())
     .pipe(uglify())
     .pipe(gulp.dest(path.dist + 'js/'))
-    .pipe(size({title:'size : js'}));
+    .pipe(size({title:'size : js'}))
+    .pipe(livereload());
 });
 
 // jshint
@@ -233,7 +236,8 @@ gulp.task('ejs', function() {
     // minify
     //.pipe(minifyejs())
     .pipe(gulp.dest(path.dist + '/'))
-    .pipe(size({title:'size : html'}));
+    .pipe(size({title:'size : html'}))
+    .pipe(livereload());
 });
 
 
@@ -250,7 +254,8 @@ gulp.task('copy', function () {
   )
   .pipe(plumber())
   .pipe(gulp.dest(path.dist))
-  .pipe(size({title:'size : copy'}));
+  .pipe(size({title:'size : copy'}))
+  .pipe(livereload());
 });
 
 
