@@ -1,32 +1,32 @@
 /**
- * gulp-boiler
- * 
+ * gnavi-gulp-boiler-ejs
+ *
  * ** 開発開始手順
- * 
+ *
  * $ npm i
  * $ gulp sprite
- * 
- * 
+ *
+ *
  * ** 開発開始 with clean & watchコマンド
- * 
+ *
  * $ gulp start
- * 
+ *
  * ** spriteコマンド
- * 
+ *
  * $ gulp sprite
- * 
+ *
  * ** iamge optimコマンド
- * 
+ *
  * $ gulp optim
- * 
- * ** jshintコマンド
- * 
+ *
+ * ** eslintコマンド
+ *
  * $ gulp test
- * 
+ *
  * ** dist、tmp削除コマンド
- * 
+ *
  * $ gulp clean
- * 
+ *
  * ---------------------------------------------------------------------- */
 
 /*
@@ -193,19 +193,14 @@ gulp.task('uglify', function () {
     .pipe(livereload());
 });
 
-// jshint
-var jshint = require('gulp-jshint');
-gulp.task('jshint', function () {
-  return gulp.src(path.js_src + 'common/*.js')
-    .pipe(plumber())
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'));
-});
+// eslint
+var eslint = require('gulp-eslint');
 gulp.task('eslint', function () {
   return gulp.src(path.js_src + 'common/*.js')
     .pipe(plumber())
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'));
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failOnError())
 });
 
 
@@ -305,7 +300,7 @@ gulp.task('optim', function () {
 
 // test
 gulp.task('test', function () {
-  gulpSequence('jshint', 'eslint')();
+  gulpSequence('eslint')();
 });
 
 // build
